@@ -1,16 +1,22 @@
-# This is a sample Python script.
+import discord
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import config
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+class MyClient(discord.Client):
+    async def on_ready(self):
+        print(f'Logged on as {self.user}!')
+        activity = discord.Game("쭌 홀짝 ㄱㄱㄱ")
+        await self.change_presence(status=discord.Status.online, activity=activity)
+
+    async def on_message(self, message):
+        print(f'Message from {message.author}: {message.content}')
+        if message.content == "ㅎㅇ":
+            await message.channel.send('나도 반가워!')
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+client = MyClient(intents=intents)
+client.run(config.TOKEN)
